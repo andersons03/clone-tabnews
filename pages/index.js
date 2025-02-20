@@ -1,5 +1,5 @@
 function Home(){
-  return <h1>Olá github!👋</h1>
+  return <h1>Olá Vercel!👋</h1>
 }
 
 export default Home;
