@@ -6,6 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "next dev",
+    "teste": "jest",
+    "teste:watch": "jest --watch",
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write ."
   },
