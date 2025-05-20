@@ -7,14 +7,17 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "next dev",
     "teste": "jest",
-    "teste:watch": "jest --watch",
+    "teste:watch": "jest --watchAll",
     "lint:check": "prettier --check .",
-    "lint:fix": "prettier --write ."
+    "lint:fix": "prettier --write .",
+    "docker:up": "docker compose -f infra/compose.yaml up -d",
+    "docker:down": "docker compose -f infra/compose.yaml down"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "next": "^15.3.2",
+    "pg": "^8.16.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
