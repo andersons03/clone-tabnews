@@ -9,10 +9,11 @@ async function query(queryObj) {
     database: envVar.POSTGRES_DB,
     user: envVar.POSTGRES_USER,
     password: envVar.POSTGRES_PASSWORD,
+    ssl: (process.env.NODE_ENV === 'development') ? false : true
   });
-  await client.connect();
-
+  
   try {
+    await client.connect();
     const result = await client.query(queryObj);
     return result;
   } catch (error) {
