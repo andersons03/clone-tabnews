@@ -20,7 +20,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "next": "^15.3.2",
+    "next": "15.3.8",
     "pg": "^8.16.0",
     "react-dom": "^18.2.0"
   },
