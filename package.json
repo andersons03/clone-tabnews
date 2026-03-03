@@ -21,9 +21,11 @@
   "license": "MIT",
   "dependencies": {
     "dotenv-expand": "^12.0.3",
-    "next": "^15.3.2",
+    "eslint-config-next": "^16.1.6",
+    "next": "^16.1.6",
     "pg": "^8.16.0",
-    "react-dom": "^18.2.0"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
   },
   "devDependencies": {
     "dotenv": "^17.2.3",

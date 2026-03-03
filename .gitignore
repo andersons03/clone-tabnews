@@ -2,5 +2,7 @@ node_modules
 .next
 .env.development
 
+.swc
+
 models/calculadora.js
 tests/units/calculadora.test.js
