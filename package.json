@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npm run docker:up && next dev",
+    "dev": "npm run docker:up && npm run wait-for-postgress && npm run migration:up && next dev",
     "dev:next": "next dev",
     "teste": "jest --runInBand",
     "teste:watch": "jest --runInBand --watchAll",
@@ -15,7 +15,8 @@
     "docker:stop": "docker compose -f infra/compose.yaml stop",
     "docker:down": "docker compose -f infra/compose.yaml down",
     "migration:create": "node-pg-migrate -m infra/migrations create",
-    "migration:up": "node-pg-migrate -m infra/migrations --envPath .env.development up"
+    "migration:up": "node-pg-migrate -m infra/migrations --envPath .env.development up",
+    "wait-for-postgress": "node infra/scripts/wait-for-postgres.js"
   },
   "author": "",
   "license": "MIT",
