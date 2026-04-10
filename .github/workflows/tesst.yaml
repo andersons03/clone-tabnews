@@ -1,0 +1,20 @@
+# nome do fluxo
+name: Automated Test
+# eveto gatilho
+on: pull_request #string || array [pull_request, push]
+# trabalho ou trabalhos
+jobs:
+  jest: #informações do trabalho
+    name: Jest Ubuntu #nome do trabahlo
+    runs-on: ubuntu-latest #runner que vai rodar os comandos
+    steps: #passo a passo
+      # action do github para puxar repositorio para workflows
+      - uses: actions/checkout@v6
+      # configura nodeJs no ambiente
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - run: npm ci 
+
+      - run: npm run teste
