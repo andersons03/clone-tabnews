@@ -2,7 +2,7 @@ import orchestrator from "tests/orchestrator";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
-})
+});
 
 test("Get status must be 200", async () => {
   const response = await fetch("http://localhost:3000/api/v1/status");
