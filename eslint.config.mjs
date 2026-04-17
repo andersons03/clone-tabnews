@@ -3,18 +3,17 @@ import globals from "globals";
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import jestPlugin from "eslint-plugin-jest";
+import eslintConfigPrettier from "eslint-config-prettier/flat";
 
 export default defineConfig([
   {
     files: ["**/*.{js,mjs,cjs}"],
     plugins: { js },
-    extends: ["js/recommended", "prettier"],
+    extends: ["js/recommended"],
     languageOptions: {
       globals: globals.browser,
     },
   },
-
-  // Config específica para testes (Jest)
   {
     files: ["**/*.spec.js", "**/*.test.js"],
     plugins: {
@@ -30,10 +29,10 @@ export default defineConfig([
       ...jestPlugin.configs.recommended.rules,
     },
   },
-
+  eslintConfigPrettier,
   ...nextVitals,
-
   globalIgnores([
+    // Default ignores of eslint-config-next:
     ".next/**",
     "out/**",
     "build/**",
