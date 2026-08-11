@@ -4,11 +4,10 @@
   "description": "Projeto de clone do tabnews.com.br, feito no curso.dev do Filipe Deschamps",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npm run docker:up && npm run docker:wait:database && npm run migrations:up && next dev",
     "dev:next": "next dev",
-    "teste": "npm run docker:up && concurrently --n next,jest --hide next -k --success command-jest \"next dev\" \"jest --runInBand --verbose \"",
-    "teste:watch": "jest --runInBand --watchAll",
+    "test": "npm run docker:up && concurrently --n next,jest --hide next -k --success command-jest \"next dev\" \"jest --runInBand --verbose \"",
+    "test:watch": "jest --runInBand --watchAll",
     "lint:prettier:check": "prettier --check .",
     "lint:prettier:fix": "prettier --write .",
     "lint:eslint:check": "eslint .",
