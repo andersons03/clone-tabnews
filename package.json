@@ -9,7 +9,7 @@
     "dev:next": "next dev",
     "test": "npm run docker:up && concurrently --n next,jest --hide next -k --success command-jest \"next dev\" \"jest --runInBand --verbose \"",
     "posttest": "npm run docker:stop",
-    "test:watch": "jest --runInBand --watchAll",
+    "test:watch": "jest --runInBand --watchAll --verbose",
     "lint:prettier:check": "prettier --check .",
     "lint:prettier:fix": "prettier --write .",
     "lint:eslint:check": "eslint .",
