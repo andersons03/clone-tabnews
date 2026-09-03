@@ -21,6 +21,6 @@ async function postHandler(request, response) {
 
 async function getHandler(request, response) {
   const pendingMigrations = await migrator.listPendingMigrations();
-  
+
   return response.status(200).json(pendingMigrations);
 }
