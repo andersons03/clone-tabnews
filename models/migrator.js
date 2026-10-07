@@ -5,7 +5,7 @@ import { join } from "node:path";
 const defaultMigrationOptions = {
   dryRun: true,
   dir: join("infra", "migrations"),
-  verbose: true,
+  log: () => {},
   migrationsTable: "pgmigrations",
   direction: "up",
 };
