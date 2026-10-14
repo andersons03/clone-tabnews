@@ -3,8 +3,8 @@ import password from "models/password.js";
 import { ValidationError, NotFoundError } from "infra/errors";
 
 async function create(userInputValue) {
-  await validateUniqueEmail(userInputValue.email);
   await validateUniqueUsername(userInputValue.username);
+  await validateUniqueEmail(userInputValue.email);
   await hashPasswordInObject(userInputValue);
 
   const newUser = await runInsertQuery(userInputValue);
@@ -13,7 +13,7 @@ async function create(userInputValue) {
   async function runInsertQuery(userInputValue) {
     const { username, email, password } = userInputValue;
 
-    const reulsts = await database.query({
+    const results = await database.query({
       text: `
         INSERT INTO 
           users (username, email, password) 
@@ -24,38 +24,61 @@ async function create(userInputValue) {
       ;`,
       values: [username, email, password],
     });
-    return reulsts.rows[0];
+    return results.rows[0];
+  }
+}
+
+async function update(username, userInputValues) {
+  const currentUser = await findOneByUsername(username);
+
+  if ("username" in userInputValues) {
+    await validateUniqueUsername(userInputValues.username);
   }
 
-  async function validateUniqueEmail(email) {
+  if ("email" in userInputValues) {
+    await validateUniqueEmail(userInputValues.email);
+  }
+
+  if ("password" in userInputValues) {
+    await hashPasswordInObject(userInputValues);
+  }
+
+  const userWithNewValues = { ...currentUser, ...userInputValues };
+
+  const updatedUser = await runUpdateQuery(userWithNewValues);
+
+  return updatedUser;
+
+  async function runUpdateQuery(userWithNewValues) {
     const results = await database.query({
       text: `
-        SELECT 
-          email
-        FROM
+        UPDATE
           users
-        WHERE
-         LOWER(email) = LOWER($1)
-      ;`,
-      values: [email],
+        SET
+          username = $2,
+          email = $3,
+          password = $4,
+          updated_at = timezone('utc', now())
+        WHERE 
+          id = $1
+        RETURNING
+         *
+      `,
+      values: [
+        userWithNewValues.id,
+        userWithNewValues.username,
+        userWithNewValues.email,
+        userWithNewValues.password,
+      ],
     });
 
-    if (results.rowCount > 0) {
-      throw new ValidationError({
-        message: "O email informado já está sendo utilizado",
-        action: "Utilize outro email para realizar o cadastro.",
-      });
-    }
+    return results.rows[0];
   }
+}
 
-  async function hashPasswordInObject(userInputValues) {
-    const hashedPassword = await password.hash(userInputValues.password);
-    userInputValues.password = hashedPassword;
-  }
-
-  async function validateUniqueUsername(username) {
-    const results = await database.query({
-      text: `
+async function validateUniqueUsername(username) {
+  const results = await database.query({
+    text: `
         SELECT 
           username
         FROM
@@ -63,16 +86,41 @@ async function create(userInputValue) {
         WHERE
          LOWER(username) = LOWER($1)
       ;`,
-      values: [username],
-    });
+    values: [username],
+  });
 
-    if (results.rowCount > 0) {
-      throw new ValidationError({
-        message: "O username informado já está sendo utilizado",
-        action: "Utilize outro username para realizar o cadastro.",
-      });
-    }
+  if (results.rowCount > 0) {
+    throw new ValidationError({
+      message: "O username informado já está sendo utilizado",
+      action: "Utilize outro username para realizar esta operação.",
+    });
   }
+}
+
+async function validateUniqueEmail(email) {
+  const results = await database.query({
+    text: `
+        SELECT 
+          email
+        FROM
+          users
+        WHERE
+         LOWER(email) = LOWER($1)
+      ;`,
+    values: [email],
+  });
+
+  if (results.rowCount > 0) {
+    throw new ValidationError({
+      message: "O email informado já está sendo utilizado",
+      action: "Utilize outro email para realizar esta operação.",
+    });
+  }
+}
+
+async function hashPasswordInObject(userInputValues) {
+  const hashedPassword = await password.hash(userInputValues.password);
+  userInputValues.password = hashedPassword;
 }
 
 async function findOneByUsername(userName) {
@@ -108,6 +156,7 @@ async function findOneByUsername(userName) {
 const user = {
   create,
   findOneByUsername,
+  update,
 };
 
 export default user;
